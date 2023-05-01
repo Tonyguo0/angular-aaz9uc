@@ -1,3 +1,43 @@
-<label for="name"> Name: </label>
-<input id="name" type="text" [formControl]="name" />
-<p> Value: {{name.value}} </p>
+<!-- profileForm2 = formBuilder service profileForm = formcontrol+formGroup instance -->
+<form [formGroup]="profileForm2" (ngSubmit)="onSubmit()">
+  <label for="first-name">FirstName: </label>
+  <input id="first-name" formControlName="fname" />
+
+  <label for="last-name">LastName: </label>
+  <input id="last-name" [formControl]="lname" />
+
+  <div formGroupName="address">
+    <h2>Address</h2>
+
+    <label for="street">Street: </label>
+    <input id="street" type="text" formControlName="street" />
+
+    <label for="city">City: </label>
+    <input id="city" type="text" formControlName="city" />
+
+    <label for="state">State: </label>
+    <input id="state" type="text" formControlName="state" />
+
+    <label for="zip">Zip Code: </label>
+    <input id="zip" type="text" formControlName="zip" />
+
+    <div formArrayName="aliases">
+      <h2>Aliases</h2>
+      <button type="button" (click)="addAlias()">+ Add another alias</button>
+
+      <div *ngFor="let alias of aliases.controls; let i = index">
+        <!-- The repeated alias template -->
+        <label for="alias-{{ i }}">Alias:</label>
+        <input id="alias-{{ i }}" type="text" [formControlName]="i" />
+      </div>
+    </div>
+  </div>
+
+  <p>complete form to enable button</p>
+  <button type="submit" [disabled]="!profileForm2.valid">Submit</button>
+</form>
+<button type="button" (click)="updateProfile()">update Profile</button>
+<p>Form Status: {{ profileForm2.status }}</p>
+<p>fname Value: {{ fname.value }}</p>
+<p>lname Value: {{ lname.value }}</p>
+<p>profileform Value: {{ profileForm2.value | json }}</p>
