@@ -4,7 +4,7 @@
   <input id="first-name" formControlName="fname" />
 
   <label for="last-name">LastName: </label>
-  <input id="last-name" [formControl]="lname" />
+  <input id="last-name" formControlName="lname" />
 
   <div formGroupName="address">
     <h2>Address</h2>
@@ -21,23 +21,30 @@
     <label for="zip">Zip Code: </label>
     <input id="zip" type="text" formControlName="zip" />
 
-    <div formArrayName="aliases">
-      <h2>Aliases</h2>
-      <button type="button" (click)="addAlias()">+ Add another alias</button>
-
-      <div *ngFor="let alias of aliases.controls; let i = index">
-        <!-- The repeated alias template -->
-        <label for="alias-{{ i }}">Alias:</label>
-        <input id="alias-{{ i }}" type="text" [formControlName]="i" />
-      </div>
-    </div>
+    <p>complete form to enable button</p>
+    <button type="submit" [disabled]="!profileForm2.valid">Submit</button>
   </div>
 
-  <p>complete form to enable button</p>
-  <button type="submit" [disabled]="!profileForm2.valid">Submit</button>
+  <div formArrayName="aliases">
+    <h2>Aliases</h2>
+    <button type="button" (click)="addAlias()">+ Add another alias</button>
+
+    <!-- aliases.controls from the formArrayName directive above -->
+    <div *ngFor="let alias of aliases.controls; let i = index">
+      <!-- The repeated alias template -->
+      <form [formGroupName]="i">
+        <label for="alias-{{ i }}">Alias-{{ i }}:</label>
+        <input id="alias-{{ i }}" type="text" formControlName="alias1" />
+
+        <label for="parent1-{{ i }}">parent1-{{ i }}:</label>
+        <input id="parent1-{{ i }}" type="text" formControlName="parent1" />
+
+        <label for="parent2-{{ i }}">parent2-{{ i }}:</label>
+        <input id="parent2-{{ i }}" type="text" formControlName="parent2" />
+      </form>
+    </div>
+  </div>
 </form>
 <button type="button" (click)="updateProfile()">update Profile</button>
 <p>Form Status: {{ profileForm2.status }}</p>
-<p>fname Value: {{ fname.value }}</p>
-<p>lname Value: {{ lname.value }}</p>
 <p>profileform Value: {{ profileForm2.value | json }}</p>
